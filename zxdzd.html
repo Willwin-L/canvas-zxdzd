@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>中心点转动</title>
+    <style>
+        canvas{border: 2px solid #ccc}
+    </style>
+    <script>
+        function getPosition(node){
+            var m = {x:0,y:0,even:null}
+            var box = node.getBoundingClientRect();
+            
+            node.addEventListener("mousemove",function(e){
+                
+                m.x = e.clientX - box.left;
+                m.y = e.clientY - box.top;
+                m.even = e;
+//                console.log(m)
+            })
+            return m;
+        }
+    </script>
+</head>
+<body>
+    <canvas id="canvas" width="600" height="600"></canvas>
+    
+    <script>
+        var canvas = document.getElementById('canvas');
+       
+        var mouse = getPosition(canvas);
+
+        var con = canvas.getContext('2d');
+        
+        con.strokeStyle = '#f0f';
+        
+        function drew(){
+//            console.log(mouse);
+            
+            con.save();
+            con.clearRect(0,0,canvas.width,canvas.height)
+            con.translate(canvas.width/2,canvas.height/2)
+            
+            var x = mouse.x - canvas.width/2;
+            var y = mouse.y - canvas.height/2;
+            
+            con.beginPath();
+            con.moveTo(0,0);
+            con.lineTo(x,y);
+            con.stroke();
+            con.restore();
+            
+                    //根据两个坐标算出距离圆心的距离
+                    //开根号
+            var l = Math.sqrt(x*x+y*y);
+            
+            con.strokeText("距离:"+l,10,10)
+            requestAnimationFrame(drew)
+        }
+        drew()
+    </script>
+   
+</body>
+</html>
